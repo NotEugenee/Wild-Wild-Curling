@@ -13,7 +13,7 @@ public class ScoringSystem : MonoBehaviour
         Stone[] stones = FindObjectsOfType<Stone>();
         Dictionary<Stone, float> stoneDistances = new Dictionary<Stone, float>();
 
-        foreach (Stones stone in stones){
+        foreach (Stone stone in stones){
             float distance = Vector3.Distance(stone.transform.position, targetCenter);
             stoneDistances.Add(stone, distance);
 
@@ -49,5 +49,6 @@ public class ScoringSystem : MonoBehaviour
         KeyValuePair<Team, int> score = CalculateScore();
         Debug.Log("Team " + score.Key + " scored " + score.Value + " points!");
     }
+    
 
 }
