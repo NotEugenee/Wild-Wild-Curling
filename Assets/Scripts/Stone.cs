@@ -41,6 +41,11 @@ public class Stone : MonoBehaviour
         return released;
     }
 
+    public void SetDrag(float drag)
+    {
+        rb.drag = drag;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DeadZone"))
