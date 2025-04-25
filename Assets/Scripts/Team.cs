@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum Team
 {
-
 red,
 blue
 }
