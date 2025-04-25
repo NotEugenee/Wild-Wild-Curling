@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class Sweeping : MonoBehaviour
 {
@@ -11,28 +14,33 @@ public class Sweeping : MonoBehaviour
     public float normalDrag = 0.2f; // Normal drag value
     public float sweepDuration = 2f; // How long sweeping lasts
     public ParticleSystem sweepEffect; // Particle effect for sweeping
-
+    public ActionBasedController leftController;
+    public ActionBasedController rightController;
+    public InputActionReference velocityActionRight;
     private float sweepTimer = 0f;
     private bool isSweeping = false;
 
     public float shakeThreshold = 1.2f; // Threshold for shake detection
-    private Vector3 lastRightVel;
+    private Vector3 lastRightVelocity;
 
     public float frequencyWindow = 1.0f; // Frequency window for shake detection
 
     private List<float> frequencyData = new List<float>();
-    // Update is called once per frame
+
+    public AudioSource sweepAudioSource;
+    public AudioClip sweepClip; // Audio clip for sweeping sound
+
+
     void Update()
     {
-        bool leftTrigger = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0.8f;
-        bool rightTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0.8f;
+        bool leftTrigger = leftController.selectAction.action.ReadValue<float>() > 0.8f;
+        bool rightTrigger = rightController.selectAction.action.ReadValue<float>() > 0.8f;
+        Vector3 rightVelocity = velocityActionRight.action.ReadValue<Vector3>();
         if (leftTrigger && rightTrigger && targetStone != null)
         {
-           Vector 3 rightVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
-        
         if ((rightVelocity - lastRightVelocity).magnitude > shakeThreshold)
         {
-            Sweeping();
+            Sweep();
         }
         lastRightVelocity = rightVelocity;
     }
@@ -47,15 +55,16 @@ public class Sweeping : MonoBehaviour
             {
                 StopSweeping();
             }
-
     }
-    private void Sweeping()
+    }
+    private void Sweep()
     {
         isSweeping = true;
         sweepTimer = sweepDuration;
-        sweepDrag = targetStone.rb.drag * .0.98f;
+        sweepDrag = targetStone.rb.drag * 0.98f;
         targetStone.SetDrag(sweepDrag); // Set lower drag when sweeping
         sweepEffect.Emit(10);// Play the particle effect
+        sweepAudioSource.PlayOneShot(sweepClip); // Play the sweeping sound
     }
     private void StopSweeping()
     {
@@ -64,4 +73,5 @@ public class Sweeping : MonoBehaviour
         sweepTimer = 0f;
         sweepEffect.Stop(); // Stop the particle effect
     }
+    
 }

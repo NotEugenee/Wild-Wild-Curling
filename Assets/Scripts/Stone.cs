@@ -8,7 +8,7 @@ public class Stone : MonoBehaviour
     public float speed = 5f;
     public float acceleration = 5f;
     public float rotationSpeed = 1f;
-    private Rigidbody rb;
+    public Rigidbody rb;
     private bool released = false;
     public float weight = 20f;
     public AudioSource collisionAudioSource;
