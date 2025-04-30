@@ -172,16 +172,16 @@ public class PowerUpWheel : MonoBehaviour
             
             // Calculate current angle
             float currentAngle = Mathf.Lerp(startAngle, targetAngle, easedT);
-            
+
             // Apply rotation
-            wheelTransform.rotation = Quaternion.Euler(currentAngle, -90f, 90f);
-            
+            wheelTransform.rotation = Quaternion.Euler(currentAngle, 0f, 90f);
+
             yield return null;
         }
-        
+
         // Ensure final position is exactly at target angle
-        wheelTransform.rotation = Quaternion.Euler(targetAngle, -90f, 90f);
-        
+        wheelTransform.rotation = Quaternion.Euler(targetAngle, 0f, 90f);
+
         // Determine power-up from final angle
         float finalAngle = Mathf.Repeat(targetAngle, 360f);
         DeterminePowerUp(finalAngle);
