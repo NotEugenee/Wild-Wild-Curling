@@ -73,5 +73,5 @@ public class Sweeping : MonoBehaviour
         sweepTimer = 0f;
         sweepEffect.Stop(); // Stop the particle effect
     }
-    
+
 }
