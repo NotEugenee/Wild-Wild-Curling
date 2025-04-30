@@ -16,6 +16,8 @@ public class Stone : MonoBehaviour
     public float maxCollisionVelocity = 10f;
     public float maxCollisionVolume = 1.0f; 
 
+    public BoxCollider safeZoneCollider; // Reference to the safe zone collider
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -34,6 +36,15 @@ public class Stone : MonoBehaviour
             }
         }
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        if(released && !IsInSafeZone())
+        {
+           Destroy(gameObject); // Destroy the stone if it leaves the safe zone
+        }
+    }
+
+    private bool IsInSafeZone()
+    {
+        return safeZoneCollider.bounds.Contains(transform.position);
     }
 
     private bool StoneReleased()
